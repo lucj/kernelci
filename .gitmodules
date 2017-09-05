@@ -1,0 +1,6 @@
+[submodule "kernelci-frontend"]
+	path = kernelci-frontend
+	url = git@github.com:lucj/kernelci-frontend.git
+[submodule "kernelci-backend"]
+	path = kernelci-backend
+	url = git@github.com:lucj/kernelci-backend.git
