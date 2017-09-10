@@ -1,18 +1,16 @@
 version: '3.3'
 services:
-  # tls:
+  # tls-proxy:
   #   image: traefik
   #   ...
   frontend:
     build: ./kernelci-frontend
     ports:
-      - 8001:80
-  # backend:
-  #   build: ./kernelci-backend
-  #   ports:
-  #     - 8000:80
-  # celery:
-  #   image: celery:4.0.2
+      - 80:80
+  proxy-backend:
+     image: ./proxy-backend
+  backend:
+     build: ./kernelci-backend
   redis:
     image: redis:3.2
     volumes:
