@@ -8,29 +8,27 @@ services:
     ports:
       - 80:80
   proxy-backend:
-     image: ./proxy-backend
+     build: ./proxy-backend
   backend:
      build: ./kernelci-backend
   redis:
     image: redis:3.2
     volumes:
       - redis-data:/data
-  rabbitmq:
-    image: rabbitmq:3.6
   mongo:
     image: mongo:3.4
     volumes:
       - mongo-data:/data/db
-  kibana:
-    image: kibana:5.5
-    ports:
-      - 5601:5601
-  elasticsearch:
-    image: elasticsearch
-    volumes:
-      - elasticsearch-data:/usr/share/elasticsearch/data
-    ports:
-      - 9200:9200
+  # kibana:
+  #   image: kibana:5.5
+  #  ports:
+  #     - 5601:5601
+  # elasticsearch:
+  #   image: elasticsearch
+  #   volumes:
+  #     - elasticsearch-data:/usr/share/elasticsearch/data
+  #   ports:
+  #     - 9200:9200
 volumes:
   redis-data:
   mongo-data:
