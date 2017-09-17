@@ -2,13 +2,17 @@ FROM nginx:1.13
 
 # Create root directory
 RUN mkdir -p /usr/share/nginx/html/kernelci \
-    && chown www-data:www-data /usr/share/nginx/html/kernelci
+    && chown nginx:nginx /usr/share/nginx/html/kernelci
+
+# Remove default configuration
+RUN rm /etc/nginx/conf.d/default.conf
 
 # Backend configuration
-COPY nginx.conf /etc/nginx/conf.d/kernelci.conf
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY kernelci.conf /etc/nginx/conf.d/kernelci.conf
 
-# Upstream definitions
-COPY upstreams.conf /etc/nginx/conf.d/upstreams.conf
+# Proxy path / proxy cache configuration
+COPY proxy.conf /etc/nginx/custom/proxy.conf
 
-# Proxy / Proxy-cache
-COPY proxy*.conf /etc/nginx/custom/
+# Maintenance
+COPY maintenance.conf /etc/nginx/custom/maintenance.conf
