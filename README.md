@@ -42,7 +42,7 @@ curl -X POST -H "Content-Type: application/json" -H "Authorization: MASTER_KEY" 
 
 This admin token can then be used to perform any api calls. 
 
-Note: one of the first action is to create some non admin token in order to perform non admin actions.
+Note: one of the first action should be to create some non admin tokens in order to perform non admin actions. To keep thing simple, we'll provide the admin token to the frontend (will be changed later on).
 
 The tokens are saved in *kernel-ci* mongo database, in the *api-token* collection. The following example shows the content of the token created above.
 
@@ -62,13 +62,25 @@ The tokens are saved in *kernel-ci* mongo database, in the *api-token* collectio
 }
 ```
 
+When the token is created, we need to set it in the flask_settings file of the frontend, under the BACKEND_TOKEN key. To take it into account, the frontend needs to be restarted.
+
+```
+docker-compose restart frontend
+```
+
+The interfaces is then available on localhost.
+
+![Home](./images/kernelci-home.png)
+
+As the installation has just be done, there are no jobs available yet.
+
+![Jobs](./images/kernelci-jobs.png)
+
 ## Status
 
-This is a work in progress [WIP].
+This is a work in progress [WIP], currently not fully functional.
 
-Currently not functional as the provisionning of token to the frontend is missing (will be fixed soon though)
-
-Also several features need to be added:
+Several features need to be added:
 - to be aligned with the official KernelCI
 - to improve and simplify the deployment and architecture of the whole application
 

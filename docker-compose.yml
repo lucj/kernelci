@@ -6,6 +6,8 @@ services:
       - redis
     ports:
       - 80:80
+    volumes:
+      - ./kernelci-frontend/etc/flask_settings:/etc/linaro/kernelci-frontend.cfg
     restart: always
   proxy-backend:
     image: lucj/kernelci-proxy-backend

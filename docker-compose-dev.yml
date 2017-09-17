@@ -2,13 +2,17 @@ version: '3.3'
 services:
   frontend:
     build: ./kernelci-frontend
+    image: lucj/kernelci-frontend
     depends_on:
       - redis
     ports:
       - 80:80
+    volumes:
+      - ./kernelci-frontend/etc/flask_settings:/etc/linaro/kernelci-frontend.cfg
     restart: always
   proxy-backend:
     build: ./proxy-backend
+    image: lucj/kernelci-proxy-backend
     depends_on:
       - backend
     ports:
@@ -16,6 +20,7 @@ services:
     restart: always
   backend:
     build: ./kernelci-backend
+    image: lucj/kernelci-backend
     depends_on:
       - mongo
       - redis
