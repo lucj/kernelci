@@ -1,21 +1,21 @@
 version: '3.3'
 services:
   frontend:
-    image: lucj/kernelci-frontend
+    build: ./kernelci-frontend
     depends_on:
       - redis
     ports:
       - 80:80
     restart: always
   proxy-backend:
-    image: lucj/kernelci-proxy-backend
+    build: ./proxy-backend
     depends_on:
       - backend
     ports:
       - 8000:80
     restart: always
   backend:
-    image: lucj/kernelci-backend
+    build: ./kernelci-backend
     depends_on:
       - mongo
       - redis
