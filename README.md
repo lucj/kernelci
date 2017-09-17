@@ -74,9 +74,9 @@ Also several features need to be added:
 
 Among the ongoing changes:
 
-- [ ] Automate the setup (create token from master key, provide token to frontend)
+- [ ] Automate the setup (create token from master key, provide token to frontend)
 - [ ] Add some tests
 - [ ] Check storage part
 - [ ] Add api documentation
 - [ ] Add elasticsearch and modify backend so log files are sent to ES
-- [ ] Add reverse proxy in front of the whole application (route requests to the correct service, handle TLS with Let's Encrypt, ...)
+- [ ] Add reverse proxy in front of the whole application (routing, TLS, ...)
