@@ -25,7 +25,7 @@ The startup of the application is done in 2 steps:
 This can be done using the following command:
 
 ```
-docker-compose up proxy-backend
+docker-compose up -d proxy-backend
 ```
 
 This command start the proxy-backend and all the dependent services: backend, redis, mongo.
@@ -48,7 +48,7 @@ In this step, we use the token generated above and set it in the *BACKEND_TOKEN*
 We then need to start the frontend with the following command:
 
 ```
-docker-compose up frontend
+docker-compose up -d frontend
 ```
 
 The web ui is then available on port 80.
