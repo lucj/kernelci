@@ -16,33 +16,60 @@ Additionnal services will be added in a near future.
 
 ## Usage
 
-The whole application can be run with the followwing command:
+The startup of the application is done in 2 steps:
+- start the backend and generate an access token
+- use this token to start the frontend (to enable frontend request to smoothly reach the backend)
+
+### Start the backend
+
+This can be done using the following command:
 
 ```
-docker-compose up
+docker-compose up proxy-backend
 ```
 
-This will create all the services and expose:
-- the web frontend on localhost:80
-- the api on localhost:8000 (temporary port that will be changed soon when a reserve proxy will be added)
+This command start the proxy-backend and all the dependent services: backend, redis, mongo.
 
-Behind the hood, it uses the Docker images of both frontend and backend. Another image, used as proxy for the backend, is used.
-All those images are stored in the temporary repositories on Docker Hub:
+The API is then up and running and available on port 8000 (temporary port that will be changed soon once the reserve proxy is added in front of the whole application).
+
+We can now use the API to create an admin token from the MASTER_KEY.
+
+```
+curl -X POST -H "Content-Type: application/json" -H "Authorization: MASTER_KEY" -d '{"email": "me@gmail.com", "admin": 1}' localhost:8000/token
+{"code":201,"result":[{"token":"fd229997-944d-41f3-884f-c4c8b1cd67af"}]}
+```
+
+Note: this admin token can then be used to perform any api calls. One of the first action should be to create some non admin tokens in order to perform non admin actions. To keep thing simple, we'll provide the admin token to the frontend (will be changed later on).
+
+### Start the frontend
+
+In this step, we use the token generated above and set it in the *BACKEND_TOKEN* in the *etc/flask_settings*.
+
+We then need to start the frontend with the following command:
+
+```
+docker-compose up frontend
+```
+
+The web ui is then available on port 80.
+
+![Home](./images/kernelci-home.png)
+
+As the installation has just be done, there are no other resources (jobs, ...) available yet.
+
+![Jobs](./images/kernelci-jobs.png)
+
+## Behind the hood
+
+### Images
+
+Behind the hood, the following temporary images are used:
 
 - [frontend image](https://hub.docker.com/r/lucj/kernelci-frontend)
 - [backend image](https://hub.docker.com/r/lucj/kernelci-backend)
 - [proxy for backend](https://hub.docker.com/r/lucj/kernelci-proxy-backend)
 
-When the application is run, the MASTER_KEY of the api (set to "MASTER_KEY" string by default), is used to create an admin token
-
-```
-curl -X POST -H "Content-Type: application/json" -H "Authorization: MASTER_KEY" -d '{"email": "me@gmail.com", "admin": 1}' localhost:8090/token
-{"code":201,"result":[{"token":"fd229997-944d-41f3-884f-c4c8b1cd67af"}]}
-```
-
-This admin token can then be used to perform any api calls. 
-
-Note: one of the first action should be to create some non admin tokens in order to perform non admin actions. To keep thing simple, we'll provide the admin token to the frontend (will be changed later on).
+### Tokens
 
 The tokens are saved in *kernel-ci* mongo database, in the *api-token* collection. The following example shows the content of the token created above.
 
@@ -61,20 +88,6 @@ The tokens are saved in *kernel-ci* mongo database, in the *api-token* collectio
     "expires_on" : null
 }
 ```
-
-When the token is created, we need to set it in the flask_settings file of the frontend, under the BACKEND_TOKEN key. To take it into account, the frontend needs to be restarted.
-
-```
-docker-compose restart frontend
-```
-
-The interfaces is then available on localhost.
-
-![Home](./images/kernelci-home.png)
-
-As the installation has just be done, there are no jobs available yet.
-
-![Jobs](./images/kernelci-jobs.png)
 
 ## Status
 
